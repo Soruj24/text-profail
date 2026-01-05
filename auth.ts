@@ -4,7 +4,7 @@ import GitHubProvider from "next-auth/providers/github";
 import CredentialsProvider from "next-auth/providers/credentials";
 import { authConfig } from "./auth.config";
 import bcrypt from "bcryptjs";
-import { User } from "@/models/User";
+import { User, IUser } from "@/models/User";
 import { dbConnect } from "@/config/db";
 import crypto from "crypto";
 
@@ -23,9 +23,9 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
         try {
           await dbConnect();
 
-          const user = await User.findOne({ email: credentials.email })
+          const user = (await User.findOne({ email: credentials.email })
             .select("+password +twoFactorSecret")
-            .lean();
+            .lean()) as IUser | null;
 
           if (!user) throw new Error("User not found");
 
