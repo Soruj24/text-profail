@@ -10,20 +10,27 @@ function VerifyEmailContent() {
   const searchParams = useSearchParams();
   const router = useRouter();
   const token = searchParams.get("token");
-  const [status, setStatus] = useState<"loading" | "success" | "error">("loading");
+  const [status, setStatus] = useState<"loading" | "success" | "error">(
+    "loading"
+  );
   const [message, setMessage] = useState("");
 
   useEffect(() => {
     if (!token) {
-      setStatus("error");
-      setMessage("Missing verification token.");
+      // Defer state update to avoid cascading renders
+      queueMicrotask(() => {
+        setStatus("error");
+      });
+      queueMicrotask(() => {
+        setMessage("Missing verification token.");
+      });
       return;
     }
 
     const verifyEmail = async () => {
       try {
         const res = await fetch(`/api/auth/verify-email?token=${token}`);
-        
+
         // Check if response is JSON
         const contentType = res.headers.get("content-type");
         if (!contentType || !contentType.includes("application/json")) {
@@ -60,17 +67,25 @@ function VerifyEmailContent() {
         {status === "loading" && (
           <div className="space-y-4">
             <Loader2 className="mx-auto h-12 w-12 animate-spin text-blue-600" />
-            <h2 className="text-2xl font-bold text-gray-900">Verifying your email...</h2>
-            <p className="text-gray-600">Please wait while we verify your account.</p>
+            <h2 className="text-2xl font-bold text-gray-900">
+              Verifying your email...
+            </h2>
+            <p className="text-gray-600">
+              Please wait while we verify your account.
+            </p>
           </div>
         )}
 
         {status === "success" && (
           <div className="space-y-4">
             <CheckCircle2 className="mx-auto h-12 w-12 text-green-500" />
-            <h2 className="text-2xl font-bold text-gray-900">Email Verified!</h2>
+            <h2 className="text-2xl font-bold text-gray-900">
+              Email Verified!
+            </h2>
             <p className="text-gray-600">{message}</p>
-            <p className="text-sm text-blue-600 animate-pulse">Redirecting to login page in 3 seconds...</p>
+            <p className="text-sm text-blue-600 animate-pulse">
+              Redirecting to login page in 3 seconds...
+            </p>
             <div className="pt-4">
               <Button asChild className="w-full">
                 <Link href="/login">Go to Login</Link>
@@ -82,7 +97,9 @@ function VerifyEmailContent() {
         {status === "error" && (
           <div className="space-y-4">
             <XCircle className="mx-auto h-12 w-12 text-red-500" />
-            <h2 className="text-2xl font-bold text-gray-900">Verification Failed</h2>
+            <h2 className="text-2xl font-bold text-gray-900">
+              Verification Failed
+            </h2>
             <p className="text-gray-600">{message}</p>
             <div className="pt-4 space-y-2">
               <Button asChild className="w-full">
@@ -101,16 +118,18 @@ function VerifyEmailContent() {
 
 export default function VerifyEmailPage() {
   return (
-    <Suspense fallback={
-      <div className="flex min-h-screen items-center justify-center bg-gray-50 px-4">
-        <div className="w-full max-w-md space-y-8 rounded-2xl bg-white p-8 shadow-xl text-center">
-          <div className="space-y-4">
-            <Loader2 className="mx-auto h-12 w-12 animate-spin text-blue-600" />
-            <h2 className="text-2xl font-bold text-gray-900">Loading...</h2>
+    <Suspense
+      fallback={
+        <div className="flex min-h-screen items-center justify-center bg-gray-50 px-4">
+          <div className="w-full max-w-md space-y-8 rounded-2xl bg-white p-8 shadow-xl text-center">
+            <div className="space-y-4">
+              <Loader2 className="mx-auto h-12 w-12 animate-spin text-blue-600" />
+              <h2 className="text-2xl font-bold text-gray-900">Loading...</h2>
+            </div>
           </div>
         </div>
-      </div>
-    }>
+      }
+    >
       <VerifyEmailContent />
     </Suspense>
   );

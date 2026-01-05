@@ -16,7 +16,8 @@ export async function GET() {
     await dbConnect();
 
     // Database status
-    const dbStatus = mongoose.connection.readyState === 1 ? "Healthy" : "Unhealthy";
+    const dbStatus =
+      mongoose.connection.readyState === 1 ? "Healthy" : "Unhealthy";
 
     // Redis status
     let redisStatus = "Disabled";
@@ -48,11 +49,14 @@ export async function GET() {
         system: systemInfo,
       },
     });
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error("System health check error:", error);
-    return NextResponse.json({ 
-      error: "Internal Server Error",
-      details: error.message || "Unknown error"
-    }, { status: 500 });
+    return NextResponse.json(
+      {
+        error: "Internal Server Error",
+        details: error instanceof Error ? error.message : "Unknown error",
+      },
+      { status: 500 }
+    );
   }
 }

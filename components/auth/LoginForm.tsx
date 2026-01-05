@@ -45,8 +45,9 @@ const LoginForm = () => {
       } else {
         router.push("/dashboard");
       }
-    } catch (e: any) {
-      if (e.message === "2FA_REQUIRED") {
+// app/login/LoginForm.tsx
+    } catch (e: unknown) {
+      if (e instanceof Error && e.message === "2FA_REQUIRED") {
         setShow2FA(true);
       } else {
         setError("Invalid credentials. Please check your email and password.");

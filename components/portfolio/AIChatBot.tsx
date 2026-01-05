@@ -15,9 +15,7 @@ import {
   Copy,
   HelpCircle,
   Briefcase,
-  FileText,
   Mail,
-  Github,
   ArrowDown,
 } from "lucide-react";
 
@@ -44,17 +42,18 @@ const QUICK_ACTIONS = [
   {
     label: "Hire Me",
     icon: Sparkles,
-    prompt: "I want to hire you for a project. What are your rates and availability?",
+    prompt:
+      "I want to hire you for a project. What are your rates and availability?",
   },
   {
     label: "Contact",
     icon: Mail,
     prompt: "How can I contact you directly?",
   },
-  { 
-    label: "Skills", 
-    icon: HelpCircle, 
-    prompt: "What technologies do you specialize in?" 
+  {
+    label: "Skills",
+    icon: HelpCircle,
+    prompt: "What technologies do you specialize in?",
   },
 ];
 
@@ -81,7 +80,7 @@ export function AIChatBot() {
   const scrollToBottom = useCallback(
     (behavior: "smooth" | "auto" = "smooth") => {
       const viewport = viewportRef.current;
-      
+
       if (viewport) {
         if (behavior === "auto") {
           viewport.scrollTop = viewport.scrollHeight + 100; // Extra padding
@@ -89,7 +88,7 @@ export function AIChatBot() {
           bottomRef.current.scrollIntoView({ behavior, block: "end" });
         }
       }
-      
+
       // Reset states
       isUserScrolledUp.current = false;
       setShowScrollButton(false);
@@ -101,11 +100,11 @@ export function AIChatBot() {
   const isAtBottom = useCallback(() => {
     const viewport = viewportRef.current;
     if (!viewport) return true;
-    
+
     const scrollHeight = viewport.scrollHeight;
     const scrollTop = viewport.scrollTop;
     const clientHeight = viewport.clientHeight;
-    
+
     // Check if we are within the threshold of the bottom
     const distanceToBottom = scrollHeight - scrollTop - clientHeight;
     return distanceToBottom <= SCROLL_THRESHOLD;
@@ -115,7 +114,7 @@ export function AIChatBot() {
     const atBottom = isAtBottom();
     isUserScrolledUp.current = !atBottom;
     setShowScrollButton(!atBottom);
-    
+
     // If user scrolled back to bottom, clear unread state
     if (atBottom) {
       setHasNewMessages(false);
@@ -209,16 +208,17 @@ export function AIChatBot() {
     const handleSpecialOpen = () => {
       setIsOpen(true);
       setIsMinimized(false);
-      
+
       // Add a specialized greeting if they just sent a message
       const contactMsg: Message = {
         id: `contact-ack-${Date.now()}`,
         role: "assistant",
-        content: "I saw you just sent a message through the contact form! Excellent choice. 🚀\n\nWhile Soruj reviews your message, is there anything specific you'd like to know about his projects or technical expertise?",
+        content:
+          "I saw you just sent a message through the contact form! Excellent choice. 🚀\n\nWhile Soruj reviews your message, is there anything specific you'd like to know about his projects or technical expertise?",
         timestamp: new Date(),
       };
-      
-      setMessages(prev => {
+
+      setMessages((prev) => {
         // Only add if not already added recently
         const lastMsg = prev[prev.length - 1];
         if (lastMsg?.content.includes("contact form")) return prev;
@@ -237,8 +237,8 @@ export function AIChatBot() {
       hour < 12
         ? "Good morning"
         : hour < 18
-          ? "Good afternoon"
-          : "Good evening";
+        ? "Good afternoon"
+        : "Good evening";
 
     const welcome: Message = {
       id: "welcome",
@@ -362,8 +362,8 @@ export function AIChatBot() {
       hour < 12
         ? "Good morning"
         : hour < 18
-          ? "Good afternoon"
-          : "Good evening";
+        ? "Good afternoon"
+        : "Good evening";
 
     setMessages([
       {
@@ -447,7 +447,7 @@ export function AIChatBot() {
                 <div>
                   <h3 className="text-xl font-bold">Nexus AI</h3>
                   <p className="text-sm opacity-90">
-                    Soruj's friendly assistant
+                    Soruj&apos;s friendly assistant
                   </p>
                 </div>
               </div>
@@ -478,8 +478,14 @@ export function AIChatBot() {
             {!isMinimized && (
               <>
                 <div className="relative flex-1 overflow-hidden">
-                  <ScrollArea className="h-full" viewportRef={viewportRef}>
-                    <div className="space-y-8 p-6 pb-24" ref={messagesContainerRef}>
+                  <ScrollArea
+                    className="h-full"
+                    viewportRef={viewportRef as React.RefObject<HTMLDivElement>}
+                  >
+                    <div
+                      className="space-y-8 p-6 pb-24"
+                      ref={messagesContainerRef}
+                    >
                       {/* Welcome Screen */}
                       {messages.length <= 1 && (
                         <div className="flex flex-col items-center text-center">
@@ -492,10 +498,10 @@ export function AIChatBot() {
                           </motion.div>
 
                           <h2 className="mb-4 text-3xl font-black text-gray-900 dark:text-white">
-                            Hello! I'm Nexus
+                            Hello! I&apos;m Nexus
                           </h2>
                           <p className="mb-12 max-w-md text-lg leading-relaxed text-gray-600 dark:text-slate-300">
-                            I'm here to help you explore Soruj's portfolio. Ask
+                            I&apos;m here to help you explore Soruj&apos;s portfolio. Ask
                             me about his projects, experience, skills, or how to
                             get in touch!
                           </p>
@@ -558,9 +564,7 @@ export function AIChatBot() {
                             )}
                           >
                             <div className="prose prose-base dark:prose-invert max-w-none">
-                              <ReactMarkdown>
-                                {msg.content}
-                              </ReactMarkdown>
+                              <ReactMarkdown>{msg.content}</ReactMarkdown>
                             </div>
 
                             {msg.role === "assistant" && (
@@ -613,7 +617,7 @@ export function AIChatBot() {
                           </div>
                         </div>
                       )}
-                      
+
                       {/* Anchor for scrolling */}
                       <div ref={bottomRef} className="h-px w-full" />
                     </div>

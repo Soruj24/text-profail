@@ -2,7 +2,10 @@ import { auth } from "@/auth";
 import { dbConnect } from "@/config/db";
 import { User } from "@/models/User";
 import { NextResponse } from "next/server";
-import { adminUpdateUserSchema, adminDeleteUserSchema } from "@/lib/validations";
+import {
+  adminUpdateUserSchema,
+  adminDeleteUserSchema,
+} from "@/lib/validations";
 
 export async function GET(request: Request) {
   try {
@@ -19,13 +22,13 @@ export async function GET(request: Request) {
 
     await dbConnect();
 
-    const query = search 
-      ? { 
+    const query = search
+      ? {
           $or: [
             { name: { $regex: search, $options: "i" } },
-            { email: { $regex: search, $options: "i" } }
-          ]
-        } 
+            { email: { $regex: search, $options: "i" } },
+          ],
+        }
       : {};
 
     const total = await User.countDocuments(query);
@@ -34,19 +37,22 @@ export async function GET(request: Request) {
       .skip(skip)
       .limit(limit);
 
-    return NextResponse.json({ 
-      success: true, 
+    return NextResponse.json({
+      success: true,
       users,
       pagination: {
         total,
         page,
         limit,
-        pages: Math.ceil(total / limit)
-      }
+        pages: Math.ceil(total / limit),
+      },
     });
   } catch (error) {
     console.error("Admin users fetch error:", error);
-    return NextResponse.json({ error: "Internal server error" }, { status: 500 });
+    return NextResponse.json(
+      { error: "Internal server error" },
+      { status: 500 }
+    );
   }
 }
 
@@ -75,10 +81,16 @@ export async function DELETE(request: Request) {
       await User.findByIdAndDelete(userId);
     }
 
-    return NextResponse.json({ success: true, message: "User deleted successfully" });
+    return NextResponse.json({
+      success: true,
+      message: "User deleted successfully",
+    });
   } catch (error) {
     console.error("Admin user delete error:", error);
-    return NextResponse.json({ error: "Internal server error" }, { status: 500 });
+    return NextResponse.json(
+      { error: "Internal server error" },
+      { status: 500 }
+    );
   }
 }
 
@@ -102,12 +114,13 @@ export async function PATCH(request: Request) {
     const { userId, role, status, name } = validation.data;
 
     await dbConnect();
-    const updateData: any = {};
+    const updateData: Partial<{ role: string; status: string; name: string }> =
+      {};
     if (role) updateData.role = role;
     if (status) updateData.status = status;
     if (name) updateData.name = name;
 
-    const oldUser = await User.findById(userId);
+    await User.findById(userId);
     await User.findByIdAndUpdate(userId, updateData);
 
     return NextResponse.json({
@@ -116,6 +129,9 @@ export async function PATCH(request: Request) {
     });
   } catch (error) {
     console.error("Admin user update error:", error);
-    return NextResponse.json({ error: "Internal server error" }, { status: 500 });
+    return NextResponse.json(
+      { error: "Internal server error" },
+      { status: 500 }
+    );
   }
 }

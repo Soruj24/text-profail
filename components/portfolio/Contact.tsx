@@ -4,7 +4,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { Mail, Github, Linkedin, MapPin, Phone, Send, MessageSquare, Loader2, CheckCircle } from "lucide-react";
+import { Mail, Github, Linkedin,  Send, MessageSquare, Loader2, CheckCircle } from "lucide-react";
 import { motion } from "framer-motion";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -221,7 +221,7 @@ export function Contact() {
                     </div>
                     <h3 className="text-2xl md:text-3xl font-black text-gray-900 dark:text-white mb-4">Message Sent!</h3>
                     <p className="text-sm md:text-base text-gray-500 dark:text-slate-400 mb-8 md:mb-12 max-w-sm">
-                      Thank you for reaching out. I've received your message and will get back to you as soon as possible.
+                      Thank you for reaching out. I&apos;ve received your message and will get back to you as soon as possible.
                     </p>
                     <div className="flex flex-col sm:flex-row gap-4 w-full">
                       <Button 

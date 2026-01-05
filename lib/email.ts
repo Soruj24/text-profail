@@ -1,4 +1,3 @@
-// lib/email.ts
 import nodemailer from "nodemailer";
 
 const transporter = nodemailer.createTransport({
@@ -29,7 +28,9 @@ export async function sendEmail({
       subject,
       html,
     });
-    console.log(`Email sent successfully to ${to}. Message ID: ${info.messageId}`);
+    console.log(
+      `Email sent successfully to ${to}. Message ID: ${info.messageId}`
+    );
     return info;
   } catch (error) {
     console.error("Failed to send email via Nodemailer:", error);
@@ -37,7 +38,10 @@ export async function sendEmail({
   }
 }
 
-export async function sendVerificationEmail(email: string, verificationLink: string) {
+export async function sendVerificationEmail(
+  email: string,
+  verificationLink: string
+) {
   return sendEmail({
     to: email,
     subject: "Verify Your Email Address",

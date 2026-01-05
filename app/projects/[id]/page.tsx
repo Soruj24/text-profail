@@ -1,18 +1,17 @@
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { 
-  Github, 
-  ExternalLink, 
-  ArrowLeft, 
-  Calendar, 
-  Users, 
-  Clock, 
-  BarChart3, 
-  CheckCircle2, 
-  Rocket, 
-  Zap, 
+import {
+  Github,
+  ExternalLink,
+  ArrowLeft,
+  Calendar,
+  Users,
+  Clock,
+  BarChart3,
+  CheckCircle2,
+  Rocket,
+  Zap,
   Lightbulb,
-  Loader2
 } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
@@ -27,12 +26,12 @@ async function getProject(id: string) {
     await dbConnect();
     // Try to find in MongoDB
     let project = await Project.findById(id).catch(() => null);
-    
+
     // If not found in MongoDB, try to find in initialProjects
     if (!project) {
-      project = initialProjects.find(p => p.id === id);
+      project = initialProjects.find((p) => p.id === id);
     }
-    
+
     return project;
   } catch (error) {
     console.error("Error fetching project:", error);
@@ -40,7 +39,11 @@ async function getProject(id: string) {
   }
 }
 
-export default async function ProjectDetailsPage({ params }: { params: Promise<{ id: string }> }) {
+export default async function ProjectDetailsPage({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}) {
   const { id } = await params;
   const project = await getProject(id);
 
@@ -51,7 +54,7 @@ export default async function ProjectDetailsPage({ params }: { params: Promise<{
   return (
     <main className="min-h-screen bg-white pb-32">
       <Navbar />
-      
+
       {/* Hero Section */}
       <section className="relative pt-32 pb-20 overflow-hidden">
         <div className="absolute inset-0 z-0">
@@ -61,11 +64,12 @@ export default async function ProjectDetailsPage({ params }: { params: Promise<{
 
         <div className="container mx-auto px-4 relative z-10">
           <div>
-            <Link 
-              href="/#projects" 
+            <Link
+              href="/#projects"
               className="inline-flex items-center gap-2 text-sm font-black uppercase tracking-widest text-gray-400 hover:text-blue-600 transition-colors mb-12 group"
             >
-              <ArrowLeft className="h-4 w-4 group-hover:-translate-x-1 transition-transform" /> Back to Works
+              <ArrowLeft className="h-4 w-4 group-hover:-translate-x-1 transition-transform" />{" "}
+              Back to Works
             </Link>
 
             <div className="flex flex-wrap items-center gap-4 mb-8">
@@ -86,12 +90,21 @@ export default async function ProjectDetailsPage({ params }: { params: Promise<{
             </p>
 
             <div className="flex flex-wrap gap-6">
-              <Button asChild size="lg" className="h-16 px-10 rounded-2xl bg-gray-900 hover:bg-blue-600 text-white font-black text-lg shadow-2xl shadow-gray-200 transition-all hover:-translate-y-1">
+              <Button
+                asChild
+                size="lg"
+                className="h-16 px-10 rounded-2xl bg-gray-900 hover:bg-blue-600 text-white font-black text-lg shadow-2xl shadow-gray-200 transition-all hover:-translate-y-1"
+              >
                 <Link href={project.liveUrl} target="_blank">
                   Live Demo <ExternalLink className="ml-2 h-5 w-5" />
                 </Link>
               </Button>
-              <Button asChild variant="outline" size="lg" className="h-16 px-10 rounded-2xl border-2 border-gray-100 font-black text-lg hover:bg-gray-50 transition-all hover:-translate-y-1">
+              <Button
+                asChild
+                variant="outline"
+                size="lg"
+                className="h-16 px-10 rounded-2xl border-2 border-gray-100 font-black text-lg hover:bg-gray-50 transition-all hover:-translate-y-1"
+              >
                 <Link href={project.githubUrl} target="_blank">
                   View Source <Github className="ml-2 h-5 w-5" />
                 </Link>
@@ -107,13 +120,11 @@ export default async function ProjectDetailsPage({ params }: { params: Promise<{
           {/* Left Column: Details */}
           <div className="lg:col-span-2 space-y-20">
             {/* Image Gallery */}
-            <div 
-              className="rounded-[48px] overflow-hidden shadow-2xl shadow-gray-200 bg-gray-100 aspect-[16/9] relative"
-            >
-              <Image 
-                src={project.image} 
-                alt={project.title} 
-                fill 
+            <div className="rounded-[48px] overflow-hidden shadow-2xl shadow-gray-200 bg-gray-100 aspect-[16/9] relative">
+              <Image
+                src={project.image}
+                alt={project.title}
+                fill
                 className="object-cover"
               />
             </div>
@@ -141,11 +152,16 @@ export default async function ProjectDetailsPage({ params }: { params: Promise<{
               </h2>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 {project.features.map((feature: string, i: number) => (
-                  <div key={i} className="flex items-start gap-4 p-6 rounded-3xl bg-gray-50 border border-gray-100 group hover:bg-white hover:shadow-xl hover:shadow-gray-100 transition-all duration-300">
+                  <div
+                    key={i}
+                    className="flex items-start gap-4 p-6 rounded-3xl bg-gray-50 border border-gray-100 group hover:bg-white hover:shadow-xl hover:shadow-gray-100 transition-all duration-300"
+                  >
                     <div className="mt-1 w-6 h-6 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 shrink-0 group-hover:bg-blue-600 group-hover:text-white transition-colors">
                       <CheckCircle2 className="h-4 w-4" />
                     </div>
-                    <span className="text-lg font-bold text-gray-700">{feature}</span>
+                    <span className="text-lg font-bold text-gray-700">
+                      {feature}
+                    </span>
                   </div>
                 ))}
               </div>
@@ -159,7 +175,10 @@ export default async function ProjectDetailsPage({ params }: { params: Promise<{
                 </h3>
                 <ul className="space-y-4">
                   {project.challenges.map((challenge: string, i: number) => (
-                    <li key={i} className="flex gap-3 text-red-800/70 font-bold leading-relaxed">
+                    <li
+                      key={i}
+                      className="flex gap-3 text-red-800/70 font-bold leading-relaxed"
+                    >
                       <span className="mt-2 w-1.5 h-1.5 rounded-full bg-red-400 shrink-0" />
                       {challenge}
                     </li>
@@ -172,7 +191,10 @@ export default async function ProjectDetailsPage({ params }: { params: Promise<{
                 </h3>
                 <ul className="space-y-4">
                   {project.solutions.map((solution: string, i: number) => (
-                    <li key={i} className="flex gap-3 text-green-800/70 font-bold leading-relaxed">
+                    <li
+                      key={i}
+                      className="flex gap-3 text-green-800/70 font-bold leading-relaxed"
+                    >
                       <span className="mt-2 w-1.5 h-1.5 rounded-full bg-green-400 shrink-0" />
                       {solution}
                     </li>
@@ -186,10 +208,16 @@ export default async function ProjectDetailsPage({ params }: { params: Promise<{
           <div className="space-y-8">
             {/* Tech Stack */}
             <div className="p-10 rounded-[40px] bg-white border border-gray-100 shadow-xl shadow-gray-100">
-              <h3 className="text-xl font-black text-gray-900 mb-8 uppercase tracking-widest">Technologies</h3>
+              <h3 className="text-xl font-black text-gray-900 mb-8 uppercase tracking-widest">
+                Technologies
+              </h3>
               <div className="flex flex-wrap gap-3">
                 {project.technologies.map((tech: string, i: number) => (
-                  <Badge key={i} variant="secondary" className="bg-gray-50 text-gray-600 border-none font-black px-4 py-2 rounded-xl text-xs uppercase tracking-tighter">
+                  <Badge
+                    key={i}
+                    variant="secondary"
+                    className="bg-gray-50 text-gray-600 border-none font-black px-4 py-2 rounded-xl text-xs uppercase tracking-tighter"
+                  >
                     {tech}
                   </Badge>
                 ))}
@@ -198,15 +226,21 @@ export default async function ProjectDetailsPage({ params }: { params: Promise<{
 
             {/* Project Stats */}
             <div className="p-10 rounded-[40px] bg-gray-900 text-white shadow-2xl shadow-blue-900/10">
-              <h3 className="text-xl font-black mb-10 uppercase tracking-widest text-blue-400">Project Specs</h3>
+              <h3 className="text-xl font-black mb-10 uppercase tracking-widest text-blue-400">
+                Project Specs
+              </h3>
               <div className="space-y-8">
                 <div className="flex items-center gap-5">
                   <div className="w-12 h-12 rounded-2xl bg-white/10 flex items-center justify-center text-blue-400">
                     <Calendar className="h-6 w-6" />
                   </div>
                   <div>
-                    <p className="text-sm font-black uppercase tracking-widest text-gray-500">Completed</p>
-                    <p className="text-lg font-black">{project.completionDate}</p>
+                    <p className="text-sm font-black uppercase tracking-widest text-gray-500">
+                      Completed
+                    </p>
+                    <p className="text-lg font-black">
+                      {project.completionDate}
+                    </p>
                   </div>
                 </div>
                 <div className="flex items-center gap-5">
@@ -214,7 +248,9 @@ export default async function ProjectDetailsPage({ params }: { params: Promise<{
                     <Clock className="h-6 w-6" />
                   </div>
                   <div>
-                    <p className="text-sm font-black uppercase tracking-widest text-gray-500">Duration</p>
+                    <p className="text-sm font-black uppercase tracking-widest text-gray-500">
+                      Duration
+                    </p>
                     <p className="text-lg font-black">{project.duration}</p>
                   </div>
                 </div>
@@ -223,7 +259,9 @@ export default async function ProjectDetailsPage({ params }: { params: Promise<{
                     <Users className="h-6 w-6" />
                   </div>
                   <div>
-                    <p className="text-sm font-black uppercase tracking-widest text-gray-500">Team Size</p>
+                    <p className="text-sm font-black uppercase tracking-widest text-gray-500">
+                      Team Size
+                    </p>
                     <p className="text-lg font-black">{project.teamSize}</p>
                   </div>
                 </div>
@@ -232,8 +270,12 @@ export default async function ProjectDetailsPage({ params }: { params: Promise<{
                     <BarChart3 className="h-6 w-6" />
                   </div>
                   <div>
-                    <p className="text-sm font-black uppercase tracking-widest text-gray-500">Complexity</p>
-                    <p className="text-lg font-black">{project.stats.complexity}</p>
+                    <p className="text-sm font-black uppercase tracking-widest text-gray-500">
+                      Complexity
+                    </p>
+                    <p className="text-lg font-black">
+                      {project.stats.complexity}
+                    </p>
                   </div>
                 </div>
               </div>

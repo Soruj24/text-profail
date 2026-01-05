@@ -1,4 +1,4 @@
-import { Shield, Lock, Eye, FileText, Bell } from "lucide-react";
+import { Shield, Lock, Eye, Bell } from "lucide-react";
 
 export default function PrivacyPage() {
   return (
@@ -66,7 +66,7 @@ export default function PrivacyPage() {
               <h2 className="text-2xl font-black text-gray-900 dark:text-white">4. Updates to This Policy</h2>
             </div>
             <p className="text-gray-600 dark:text-gray-400 leading-relaxed font-medium">
-              We may update our Privacy Policy from time to time. We will notify you of any changes by posting the new Privacy Policy on this page and updating the "Last Updated" date.
+              We may update our Privacy Policy from time to time. We will notify you of any changes by posting the new Privacy Policy on this page and updating the Last Updated date.
             </p>
           </section>
         </div>

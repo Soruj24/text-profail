@@ -1,5 +1,4 @@
 import { NextResponse } from "next/server";
-import { ollamaModel } from "@/lib/ollama";
 
 export async function GET() {
   try {

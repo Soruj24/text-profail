@@ -30,7 +30,7 @@ export async function POST(request: Request) {
 
     const body = await request.json();
     await dbConnect();
-    const experience = (await Experience.create(body)) as any;
+    const experience = (await Experience.create(body))
 
     return NextResponse.json({ success: true, experience });
   } catch (error) {

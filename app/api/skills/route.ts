@@ -36,7 +36,7 @@ export async function POST(request: Request) {
 
     const body = await request.json();
     await dbConnect();
-    const skill = (await Skill.create(body)) as any;
+    const skill = (await Skill.create(body))
 
     return NextResponse.json({ success: true, skill });
   } catch (error) {

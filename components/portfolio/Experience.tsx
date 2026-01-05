@@ -3,7 +3,7 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { useRef, useState, useEffect } from "react";
-import { Loader2, Briefcase, Calendar, GraduationCap } from "lucide-react";
+import { Loader2, Briefcase } from "lucide-react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";

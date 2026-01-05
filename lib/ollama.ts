@@ -9,12 +9,14 @@ export const ollamaModel = new ChatOllama({
 });
 
 export async function getAIStream(
-  userMessage: string, 
+  userMessage: string,
   history: { role: string; content: string }[] = [],
   context?: string
 ) {
   try {
-    const systemPrompt = context || `You are "Nexus AI", the highly intelligent and friendly assistant for Soruj Mahmud's portfolio.
+    const systemPrompt =
+      context ||
+      `You are "Nexus AI", the highly intelligent and friendly assistant for Soruj Mahmud's portfolio.
       
       Your personality:
       - Professional, tech-savvy, and encouraging.
@@ -33,12 +35,18 @@ export async function getAIStream(
 
     const prompt = ChatPromptTemplate.fromMessages([
       ["system", systemPrompt],
-      ...history.map((m) => [m.role === "user" ? "user" : "assistant", m.content] as [string, string]),
+      ...history.map(
+        (m) =>
+          [m.role === "user" ? "user" : "assistant", m.content] as [
+            string,
+            string
+          ]
+      ),
       ["user", "{input}"],
     ]);
 
     const chain = prompt.pipe(ollamaModel).pipe(new StringOutputParser());
-    
+
     // Check if we can get a stream
     const stream = await chain.stream({
       input: userMessage,
@@ -47,16 +55,21 @@ export async function getAIStream(
     return stream;
   } catch (error: unknown) {
     console.error("Ollama AI Error:", error);
-    
+
     // Provide a more helpful error message
-    if ((error as any).message?.includes("fetch failed") || (error as any).code === "ECONNREFUSED") {
-      throw new Error("Ollama is not running. Please make sure Ollama is installed and running locally.");
-    } else if ((error as any).message?.includes("not found")) {
-      throw new Error("The 'llama3.2' model was not found. Please run 'ollama pull llama3.2' in your terminal.");
+    if (
+      (error as Error).message?.includes("fetch failed") ||
+      (error as { code?: string }).code === "ECONNREFUSED"
+    ) {
+      throw new Error(
+        "Ollama is not running. Please make sure Ollama is installed and running locally."
+      );
+    } else if ((error as Error).message?.includes("not found")) {
+      throw new Error(
+        "The 'llama3.2' model was not found. Please run 'ollama pull llama3.2' in your terminal."
+      );
     }
-    
-    throw new Error((error as any).message || "Failed to get stream from AI");
+
+    throw new Error((error as Error).message || "Failed to get stream from AI");
   }
 }
-
-

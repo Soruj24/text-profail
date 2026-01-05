@@ -61,7 +61,7 @@ export async function POST(request: Request) {
 
     const body = await request.json();
     await dbConnect();
-    const project = (await Project.create(body)) as any;
+    const project = (await Project.create(body))
 
     return NextResponse.json({ success: true, project });
   } catch (error) {
